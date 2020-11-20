@@ -1,6 +1,6 @@
 window.onload = function() {
-    var button = document.getElementById("lookup");
-    var button1 = document.getElementById("lookup1");
+    let button = document.getElementById("lookup");
+    let button1 = document.getElementById("lookup1");
     button.addEventListener("click", function(e) {
         e.preventDefault();
         var country = document.getElementById("country").value;
@@ -11,7 +11,7 @@ window.onload = function() {
                 if (httpRequest.status === 200) {
                     var response = httpRequest.responseText;
                     console.log(response);
-                    var inputmessage = document.getElementById("result");
+                    let inputmessage = document.getElementById("result");
                     inputmessage.innerHTML = response;
                 } else {
 
@@ -29,7 +29,7 @@ window.onload = function() {
         var country = document.getElementById("country").value;
         var cities = document.getElementById("country").value;
         var httpRequest = new XMLHttpRequest();
-        var url = "world.php?country=" + country + "&context=cities";
+        var url = "world.php" + "?country=" + country + "&context=cities";
         httpRequest.onreadystatechange = function() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {

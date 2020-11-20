@@ -6,9 +6,13 @@ $dbname = 'world';
 
 $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
 $country= filter_input(INPUT_GET, "country", FILTER_SANITIZE_STRING);
+$context=filter_input(INPUT_GET, "context", FILTER_SANITIZE_STRING);
 $querycountry = $conn->query("SELECT * FROM countries WHERE name LIKE '%$country%'");
 $results = $querycountry->fetchAll(PDO::FETCH_ASSOC);
-
+$querycity=$conn->query("SELECT cities.name, cities.district,cities.population 
+FROM countries LEFT JOIN cities ON countries.code = cities.country_code 
+WHERE countries.name LIKE '%$country%'");
+$city= $querycity->fetchAll(PDO::FETCH_ASSOC);
 
 
 
@@ -20,7 +24,7 @@ $results = $querycountry->fetchAll(PDO::FETCH_ASSOC);
 <?php endforeach; ?>
 </ul>
 
-<?php ?>
+<?php if(isset($country)&&(!isset($context))) :?>
   <table class = "display">
     <caption><h2> TABLE SHOWING COUNTRIES</h2></caption>
     <thead>
@@ -42,4 +46,26 @@ $results = $querycountry->fetchAll(PDO::FETCH_ASSOC);
 <?php endforeach; ?>
 </tbody>
 </table>
-<?php ?>
+<?php endif; ?>
+
+<?php if(isset($context)) :?>
+<table class = "display">
+    <caption><h2> TABLE SHOWING CITIES</h2></caption>
+    <thead>
+      <tr>
+        <th class = "th1">Name</th>
+        <th class = "th2">District</th>
+        <th class = "th3">Population</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($city as $context): ?>
+        <tr>
+          <td><?php echo $context["name"]; ?></td>
+          <td><?php echo $context["district"]; ?></td>
+          <td><?php echo $context["population"]; ?></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<?php endif; ?>
